@@ -37,6 +37,7 @@ namespace GubaidullinLanguage.Pages
 
             ComboType.SelectedIndex = 0;
             strCount.SelectedIndex = 0;
+            SortBox.SelectedIndex = 0;
             TBAllRecords.Text = GubaidullinLanguageEntities.GetContext().Client.ToList().Count().ToString();
             UpdateClients();
         }
@@ -52,6 +53,27 @@ namespace GubaidullinLanguage.Pages
             || c.Phone.ToLower().Contains(SearchTextBox.Text.ToLower())
             || c.Email.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
 
+
+            if (SortBox.SelectedIndex == 1)
+            {
+                current = current.OrderBy(c => c.FirstName + c.LastName + c.Patronymic).ToList();
+            }
+            else if (SortBox.SelectedIndex == 2)
+            {
+                current = current.OrderByDescending(c => c.FirstName + c.LastName + c.Patronymic).ToList();
+            }
+            else if (SortBox.SelectedIndex == 3)
+            {
+                current = current.OrderByDescending(c => c.VisitCount).ToList();
+            }
+            else if (SortBox.SelectedIndex == 4)
+            {
+                current = current.OrderBy(c => c.VisitCount).ToList();
+            }
+            else if (SortBox.SelectedIndex == 5)
+            {
+                current = current.OrderBy(c => c.LastVisitDate).ToList();
+            }
             if (ComboType.SelectedIndex == 1)
             {
                 current = current.Where(c => c.GenderCode == "м").ToList();
@@ -60,15 +82,6 @@ namespace GubaidullinLanguage.Pages
             {
                 current = current.Where(c => c.GenderCode == "ж").ToList();
             }
-            if (Up.IsChecked == true)
-            {
-                current = current.OrderBy(c => c.FirstName + c.LastName + c.Patronymic).ToList();
-            }
-            if (Down.IsChecked == true)
-            {
-                current = current.OrderByDescending(c => c.FirstName + c.LastName + c.Patronymic).ToList();
-            }
-
             TBCount.Text = current.Count.ToString();
             TBAllRecords.Text = GubaidullinLanguageEntities.GetContext().Client.ToList().Count.ToString();
 
@@ -246,6 +259,20 @@ namespace GubaidullinLanguage.Pages
         private void Up_Checked(object sender, RoutedEventArgs e)
         {
             UpdateClients();
+        }
+
+        private void SortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateClients();
+        }
+
+        private void DeleteBtn_Click_1(object sender, RoutedEventArgs e)
+        {
+            var selectedTextBox = ClientsListView.SelectedItem as Client;
+            if (selectedTextBox != null)
+            {
+                Clipboard.SetText(selectedTextBox.ID.ToString());
+            }
         }
     }
 }

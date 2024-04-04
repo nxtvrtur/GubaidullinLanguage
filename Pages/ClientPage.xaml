@@ -8,7 +8,6 @@
       d:DesignHeight="700" d:DesignWidth="800">
 
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -20,13 +19,21 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Horizontal">
-            <TextBlock FontWeight="Bold" Margin="10" VerticalAlignment="Center" FontSize="20" Text="Поиск"></TextBlock>
+            <TextBlock FontWeight="Bold" Margin="10" VerticalAlignment="Center" FontSize="20" Text="Поиск:"></TextBlock>
             <TextBox Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Margin="10" FontSize="20" Width="160" FontFamily="comic sans ms" Height="30" VerticalAlignment="Center" ></TextBox>
         </StackPanel>
-        <StackPanel HorizontalAlignment="Center" Grid.Column="2">
-            <RadioButton Name="Up" Checked="Up_Checked" Grid.Column="2" Content="ФИО А-Я"></RadioButton>
-            <RadioButton Name="Down" Checked="Down_Checked" Grid.Column="2"  Content="ФИО Я-А"></RadioButton>
+        <StackPanel Orientation="Horizontal" Grid.Row="0"  Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock FontWeight="Bold" Margin="10" VerticalAlignment="Center" FontSize="20" Text="Сортировать:"></TextBlock>
+            <ComboBox Name="SortBox" Height="30" Width="160" SelectionChanged="SortBox_SelectionChanged">
+                <TextBlock HorizontalAlignment="Center">По умолчанию</TextBlock>
+                <TextBlock>От А до Я</TextBlock>
+                <TextBlock>От Я до А</TextBlock>
+                <TextBlock>посещения убыв.</TextBlock>
+                <TextBlock>посещения возр.</TextBlock>
+                <TextBlock>по дате последнего посещения</TextBlock>
+            </ComboBox>
         </StackPanel>
+
 
 
 
@@ -42,7 +49,7 @@
         <ListView Grid.ColumnSpan="6" Grid.Row="1" Name="ClientsListView">
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Click="DeleteBtn_Click" Name="DeleteBtn" Header="Удалить"></MenuItem>
+                    <MenuItem Click="DeleteBtn_Click_1" Name="DeleteBtn" Header="копировать id"></MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
             <ListView.ItemTemplate>
@@ -55,6 +62,7 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
@@ -101,12 +109,15 @@
                         <StackPanel Margin="10 0 0 0" Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
                             <TextBlock FontSize="18" Text="{Binding VisitCount, StringFormat={}Кол-во посещений: {0}}"></TextBlock>
                         </StackPanel>
-                        <Button Grid.Row="6" Content="Удалить" HorizontalAlignment="Right" Click="DeleteBtn_Click" ></Button>
+                        <StackPanel Orientation="Horizontal" Grid.Row="7">
+                            <Button Width="67" Margin="8" Grid.Row="7" Content="Удалить" HorizontalAlignment="Right" Click="DeleteBtn_Click" ></Button>
+                            <Button Width="67" Margin="8" Grid.Row="7" Content="Редакт." HorizontalAlignment="Left" ></Button>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="3">
+        <StackPanel Margin="5 20 0 0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="3">
             <TextBlock Text="Выводить по "/>
             <ComboBox Name="strCount" Width="100" SelectionChanged="strCount_SelectionChanged">
                 <TextBlock>10</TextBlock>
@@ -127,5 +138,6 @@
             </ListBox>
             <Button Name="RightDirButton" Content="&gt;" Width="20" Height="25" Click="RightDirButton_Click"/>
         </StackPanel>
+        <Button Content="Добавить клиента" Height="30" Grid.Row="7" Width="150" VerticalAlignment="Center" Margin="20 20 0 0" HorizontalAlignment="Left"></Button>
     </Grid>
 </Page>

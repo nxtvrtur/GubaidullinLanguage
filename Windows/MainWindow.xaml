@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GubaidullinLanguage"
         mc:Ignorable="d"
-        Title="Language | Языковая школа | Губайдуллин" FontFamily="Comic Sans MS" Icon="../Res/school_logo.ico" Height="600" Width="800">
+        Title="Language | Языковая школа | Губайдуллин" FontFamily="Comic Sans MS" Icon="../Res/school_logo.ico" Height="600" Width="950">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"></RowDefinition>

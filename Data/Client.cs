@@ -42,7 +42,7 @@ namespace GubaidullinLanguage.Data
             {
                 if (VisitCount == 0)
                 {
-                    return "";
+                    return "нет";
                 }
                 else
                 {
