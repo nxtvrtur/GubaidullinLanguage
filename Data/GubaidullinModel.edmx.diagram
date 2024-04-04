@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="49e2c8be8d154a93aad37ca93f875773" Name="Diagram1">
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.Client" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.ClientService" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.DocumentByService" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.Gender" Width="1.5" PointX="1.5" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.Manufacturer" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.Product" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.ProductPhoto" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.ProductSale" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.Service" Width="1.5" PointX="0.75" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.ServicePhoto" Width="1.5" PointX="3" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GubaidullinLanguageModel.Tag" Width="1.5" PointX="3" PointY="16.5" IsExpanded="true" />
+        <AssociationConnector Association="GubaidullinLanguageModel.FK_Client_Gender" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.FK_ClientService_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.FK_ClientService_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.FK_DocumentByService_ClientService" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.FK_ProductSale_ClientService" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.FK_Product_Manufacturer" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.FK_ProductPhoto_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.FK_ProductSale_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.FK_ServicePhoto_Service" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.AttachedProduct" ManuallyRouted="false" />
+        <AssociationConnector Association="GubaidullinLanguageModel.TagOfClient" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
