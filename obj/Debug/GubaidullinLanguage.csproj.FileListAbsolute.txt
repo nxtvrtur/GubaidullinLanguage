@@ -22,3 +22,5 @@ C:\Users\User\Study\РПМ\GubaidullinLanguage\bin\Debug\EntityFramework.xml
 C:\Users\User\Study\РПМ\GubaidullinLanguage\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\User\Study\РПМ\GubaidullinLanguage\obj\Debug\GubaidullinLanguage_Content.g.cs
 C:\Users\User\Study\РПМ\GubaidullinLanguage\obj\Debug\GubaidullinLanguage.csproj.CopyComplete
+C:\Users\User\Study\РПМ\GubaidullinLanguage\obj\Debug\Windows\AddEditWindow.g.cs
+C:\Users\User\Study\РПМ\GubaidullinLanguage\obj\Debug\Windows\AddEditWindow.baml

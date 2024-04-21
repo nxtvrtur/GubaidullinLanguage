@@ -1,5 +1,6 @@
 ﻿using GubaidullinLanguage.Data;
 using GubaidullinLanguage.Helpers;
+using GubaidullinLanguage.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,197 +23,186 @@ namespace GubaidullinLanguage.Pages
     /// </summary>
     public partial class ClientPage : Page
     {
-        int CountInPage = 10;
-        int CountRecords;
-        int CountPage;
+        int CountRecords = 0;
+        int CountPage = 0;
         int CurrentPage = 0;
-
+        int ClientsListView_Size = 0;
+        int setSizeForLW = 10;
+        int actualSizeLW = 0;
         List<Client> CurrentPageList = new List<Client>();
-        List<Client> TableList;
+        List<Client> TableList = new List<Client>();
         public ClientPage()
         {
             InitializeComponent();
-
-            ClientsListView.ItemsSource = GubaidullinLanguageEntities.GetContext().Client.ToList();
-
-            ComboType.SelectedIndex = 0;
+            Gender_CB.SelectedIndex = 0;
+            ManySort_CB.SelectedIndex = 0;
+            var _current_Client = GubaidullinLanguageEntities.GetContext().Client.ToList();
+            ClientsListView.ItemsSource = _current_Client;
+            ClientsListView_Size = _current_Client.Count;
             strCount.SelectedIndex = 0;
-            SortBox.SelectedIndex = 0;
-            TBAllRecords.Text = GubaidullinLanguageEntities.GetContext().Client.ToList().Count().ToString();
             UpdateClients();
-        }
 
-        private void UpdateClients()
-        {
-
-            var current = GubaidullinLanguageEntities.GetContext().Client.ToList();
-
-            current = current.Where(c => c.LastName.ToLower().Contains(SearchTextBox.Text.ToLower()) 
-            || c.FirstName.ToLower().Contains(SearchTextBox.Text.ToLower()) 
-            || c.Patronymic.ToLower().Contains(SearchTextBox.Text.ToLower())
-            || c.Phone.ToLower().Contains(SearchTextBox.Text.ToLower())
-            || c.Email.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
-
-
-            if (SortBox.SelectedIndex == 1)
-            {
-                current = current.OrderBy(c => c.FirstName + c.LastName + c.Patronymic).ToList();
-            }
-            else if (SortBox.SelectedIndex == 2)
-            {
-                current = current.OrderByDescending(c => c.FirstName + c.LastName + c.Patronymic).ToList();
-            }
-            else if (SortBox.SelectedIndex == 3)
-            {
-                current = current.OrderByDescending(c => c.VisitCount).ToList();
-            }
-            else if (SortBox.SelectedIndex == 4)
-            {
-                current = current.OrderBy(c => c.VisitCount).ToList();
-            }
-            else if (SortBox.SelectedIndex == 5)
-            {
-                current = current.OrderBy(c => c.LastVisitDate).ToList();
-            }
-            if (ComboType.SelectedIndex == 1)
-            {
-                current = current.Where(c => c.GenderCode == "м").ToList();
-            }
-            if (ComboType.SelectedIndex == 2)
-            {
-                current = current.Where(c => c.GenderCode == "ж").ToList();
-            }
-            TBCount.Text = current.Count.ToString();
-            TBAllRecords.Text = GubaidullinLanguageEntities.GetContext().Client.ToList().Count.ToString();
-
-            TBCount.Text = current.Count().ToString();
-
-            ClientsListView.ItemsSource = current;
-
-            TableList = current;
-
-            if (strCount.SelectedIndex == 0)
-            {
-                CountInPage = 10;
-            }
-            else if (strCount.SelectedIndex == 1)
-            {
-                CountInPage = 50;
-            }
-            else if (strCount.SelectedIndex == 2)
-            {
-                CountInPage = 200;
-            }
-            else if (strCount.SelectedIndex == 3)
-            {
-                CountInPage = 0;
-            }
-            ClientsListView.ItemsSource = current;
-            ChangePage(0, 0);
-        }
-
-        private void ComboType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdateClients();
-        }
-
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateClients();
-        }
-
-        private void strCount_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdateClients();
         }
         private void ChangePage(int direction, int? selectedPage)
         {
+            if (strCount.SelectedIndex == 0)
+                setSizeForLW = 10;
+            if (strCount.SelectedIndex == 1)
+                setSizeForLW = 50;
+            if (strCount.SelectedIndex == 2)
+                setSizeForLW = 200;
+            if (strCount.SelectedIndex == 3)
+                setSizeForLW = ClientsListView_Size;
             CurrentPageList.Clear();
             CountRecords = TableList.Count;
-            if (CountInPage != 0)
+
+            if (CountRecords % setSizeForLW > 0)
             {
-                if (CountRecords % CountInPage > 0)
-                {
-                    CountPage = CountRecords / CountInPage + 1;
-                }
-                else
-                {
-                    CountPage = CountRecords / CountInPage;
-                }
+                CountPage = CountRecords / setSizeForLW + 1;
+            }
+            else
+            {
+                CountPage = CountRecords / setSizeForLW;
+            }
 
-                Boolean Ifupdate = true;
-
-                int min;
-
-                if (selectedPage.HasValue)
+            Boolean Ifupdate = true;
+            int min;
+            if (selectedPage.HasValue)
+            {
+                if (selectedPage >= 0 && selectedPage <= CountPage)
                 {
-                    if (selectedPage >= 0 && selectedPage <= CountPage)
+                    CurrentPage = (int)selectedPage;
+                    min = CurrentPage * setSizeForLW + setSizeForLW < CountRecords ? CurrentPage * setSizeForLW + setSizeForLW : CountRecords;
+                    for (int i = CurrentPage * setSizeForLW; i < min; i++)
                     {
-                        CurrentPage = (int)selectedPage;
-                        min = CurrentPage * CountInPage + CountInPage < CountRecords ? CurrentPage * CountInPage + CountInPage : CountRecords;
-                        for (int i = CurrentPage * CountInPage; i < min; i++)
-                        {
-                            CurrentPageList.Add(TableList[i]);
-                        }
+                        CurrentPageList.Add(TableList[i]);
                     }
-                }
-                else
-                {
-                    switch (direction)
-                    {
-                        case 1:
-                            if (CurrentPage > 0)
-                            {
-                                CurrentPage--;
-                                min = CurrentPage * CountInPage + CountInPage < CountRecords ? CurrentPage * CountInPage + CountInPage : CountRecords;
-                                for (int i = CurrentPage * CountInPage; i < min; i++)
-                                {
-                                    CurrentPageList.Add(TableList[i]);
-                                }
-                            }
-                            else
-                            {
-                                Ifupdate = false;
-                            }
-                            break;
-                        case 2:
-                            if (CurrentPage < CountPage - 1)
-                            {
-                                CurrentPage++;
-                                min = CurrentPage * CountInPage + CountInPage < CountRecords ? CurrentPage * CountInPage + CountInPage : CountRecords;
-                                for (int i = CurrentPage * CountInPage; i < min; i++)
-                                {
-                                    CurrentPageList.Add(TableList[i]);
-                                }
-                            }
-                            else
-                            {
-                                Ifupdate = false;
-                            }
-                            break;
-                    }
-                }
-                if (Ifupdate)
-                {
-                    PageListBox.Items.Clear();
-                    for (int i = 1; i <= CountPage; i++)
-                    {
-                        PageListBox.Items.Add(i);
-                    }
-                    PageListBox.SelectedIndex = CurrentPage;
-
-                    
-
-                    ClientsListView.ItemsSource = CurrentPageList;
-
-                    ClientsListView.Items.Refresh();
                 }
             }
             else
             {
-                PageListBox.Items.Clear();
-                PageListBox.Items.Add(1);
+                switch (direction)
+                {
+                    case 1:
+                        if (CurrentPage > 0)
+                        {
+                            CurrentPage--;
+                            min = CurrentPage * setSizeForLW + setSizeForLW < CountRecords ? CurrentPage * setSizeForLW + setSizeForLW : CountRecords;
+                            for (int i = CurrentPage * setSizeForLW; i < min; i++)
+                            {
+                                CurrentPageList.Add(TableList[i]);
+                            }
+                        }
+                        else
+                        {
+                            Ifupdate = false;
+                        }
+                        break;
+
+                    case 2:
+                        if (CurrentPage < CountPage - 1)
+                        {
+                            CurrentPage++;
+                            min = CurrentPage * setSizeForLW + setSizeForLW < CountRecords ? CurrentPage * setSizeForLW + setSizeForLW : CountRecords;
+                            for (int i = CurrentPage * setSizeForLW; i < min; i++)
+                            {
+                                CurrentPageList.Add(TableList[i]);
+                            }
+                        }
+                        else
+                        {
+                            Ifupdate = false;
+                        }
+                        break;
+                }
             }
+            if (Ifupdate)
+            {
+                PageListBox.Items.Clear();
+                for (int i = 1; i <= CountPage; i++)
+                {
+                    PageListBox.Items.Add(i);
+                }
+                PageListBox.SelectedIndex = CurrentPage;
+
+                min = CurrentPage * setSizeForLW + setSizeForLW < CountRecords ? CurrentPage * setSizeForLW + setSizeForLW : CountRecords;
+                TBCount.Text = actualSizeLW.ToString();
+                TBAllRecords.Text = "из" + ClientsListView_Size.ToString();
+
+                ClientsListView.ItemsSource = CurrentPageList;
+                ClientsListView.Items.Refresh();
+            }
+        }
+        public void UpdateClients()
+        {
+            var current_Client = GubaidullinLanguageEntities.GetContext().Client.ToList();
+            if (Gender_CB.SelectedIndex == 1)
+            {
+                current_Client = current_Client.Where(p => p.GenderCode.Contains('м')).ToList();
+            }
+            if (Gender_CB.SelectedIndex == 2)
+            {
+                current_Client = current_Client.Where(p => p.GenderCode.Contains('ж')).ToList();
+            }
+            current_Client = current_Client.Where(p => p.FirstName.ToLower().Contains(Search.Text.ToLower()) ||
+            p.LastName.ToLower().Contains(Search.Text.ToLower()) ||
+            p.Patronymic.ToLower().Contains(Search.Text.ToLower()) ||
+            p.phone.Contains(Search.Text) || p.Email.Contains(Search.Text.ToLower())).ToList();
+            if (ManySort_CB.SelectedIndex == 1)
+            {
+                current_Client = current_Client.OrderBy(p => p.LastName).ToList();
+            }
+            if (ManySort_CB.SelectedIndex == 2)
+            {
+                current_Client = current_Client.OrderBy(p => p.LastVisitDate).ToList();
+            }
+            if (ManySort_CB.SelectedIndex == 3)
+            {
+                current_Client = current_Client.OrderByDescending(p => p.VisitCount).ToList();
+            }
+            ClientsListView.ItemsSource = current_Client;
+            TableList = current_Client;
+            actualSizeLW = TableList.Count;
+            ChangePage(0, 0);
+        }
+        private void Search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateClients();
+        }
+
+        private void Gender_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateClients();
+        }
+
+        private void Famil_A_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateClients();
+        }
+
+        private void Younger_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateClients();
+        }
+
+        private void Famil_Z_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateClients();
+        }
+
+        private void Older_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateClients();
+        }
+
+        private void Many_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateClients();
+        }
+
+        private void AntiMany_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateClients();
         }
 
         private void LeftDirButton_Click(object sender, RoutedEventArgs e)
@@ -230,49 +220,52 @@ namespace GubaidullinLanguage.Pages
             ChangePage(0, Convert.ToInt32(PageListBox.SelectedItem.ToString()) - 1);
         }
 
-        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        private void strCount_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (((sender as Button).DataContext as Client).VisitCount == 0)
-            {
-                if (MessageBox.Show("Вы точно хотите выполнить уаление?", "Внимание", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    GubaidullinLanguageEntities.GetContext().Client.Remove((sender as Button).DataContext as Client);
-                    GubaidullinLanguageEntities.GetContext().SaveChanges();
+            UpdateClients();
+        }
 
-                    ClientsListView.ItemsSource = GubaidullinLanguageEntities.GetContext().Client.ToList();
-                    UpdateClients();
-                }
-
-            }
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var currentClient = (sender as Button).DataContext as Client;
+            var currentClientService = GubaidullinLanguageEntities.GetContext().ClientService.ToList();
+            currentClientService = currentClientService.Where(p => p.ClientID == currentClient.ID).ToList();
+            if (currentClientService.Count != 0)
+                MessageBox.Show("Невозможно выполнить удаление, т.к у клиента есть информация о посещениях");
             else
             {
-                MessageBox.Show("Невозможно удалить", "Ошибка");
+                if (MessageBox.Show("Вы точно хотите выполнить удаление?", "Внимание!", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        GubaidullinLanguageEntities.GetContext().Client.Remove(currentClient);
+                        GubaidullinLanguageEntities.GetContext().SaveChanges();
+                        UpdateClients();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString());
+                    }
+                }
             }
-            UpdateClients();
         }
 
-        private void Down_Checked(object sender, RoutedEventArgs e)
+        private void ManySort_CB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateClients();
         }
 
-        private void Up_Checked(object sender, RoutedEventArgs e)
+        private void EditDutton_Click(object sender, RoutedEventArgs e)
         {
+            var currentClient = sender as Button;
+            new AddEditWindow(currentClient.DataContext as Client).ShowDialog();
             UpdateClients();
         }
 
-        private void SortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            new AddEditWindow(null).ShowDialog();
             UpdateClients();
-        }
-
-        private void DeleteBtn_Click_1(object sender, RoutedEventArgs e)
-        {
-            var selectedTextBox = ClientsListView.SelectedItem as Client;
-            if (selectedTextBox != null)
-            {
-                Clipboard.SetText(selectedTextBox.ID.ToString());
-            }
         }
     }
 }

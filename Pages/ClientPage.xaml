@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:GubaidullinLanguage.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="700" d:DesignWidth="800">
+      d:DesignHeight="700" d:DesignWidth="850" FontFamily="Comic Sans Ms">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -18,40 +18,38 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
+
         <StackPanel Grid.Column="0" Orientation="Horizontal">
             <TextBlock FontWeight="Bold" Margin="10" VerticalAlignment="Center" FontSize="20" Text="Поиск:"></TextBlock>
-            <TextBox Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Margin="10" FontSize="20" Width="160" FontFamily="comic sans ms" Height="30" VerticalAlignment="Center" ></TextBox>
+            <TextBox Name="Search" TextChanged="Search_TextChanged" Margin="10" FontSize="20" Width="160" FontFamily="comic sans ms" Height="40" VerticalAlignment="Center" ></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="0"  Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock FontWeight="Bold" Margin="10" VerticalAlignment="Center" FontSize="20" Text="Сортировать:"></TextBlock>
-            <ComboBox Name="SortBox" Height="30" Width="160" SelectionChanged="SortBox_SelectionChanged">
-                <TextBlock HorizontalAlignment="Center">По умолчанию</TextBlock>
-                <TextBlock>От А до Я</TextBlock>
-                <TextBlock>От Я до А</TextBlock>
-                <TextBlock>посещения убыв.</TextBlock>
-                <TextBlock>посещения возр.</TextBlock>
-                <TextBlock>по дате последнего посещения</TextBlock>
+            <ComboBox Name="ManySort_CB" Height="40" Width="175" SelectionChanged="ManySort_CB_SelectionChanged">
+                <TextBlock Text="По умолч."/>
+                <TextBlock Text="Фамилия А-Я"/>
+                <TextBlock xml:space="preserve">Дате посещения 
+от новых к старым
+                </TextBlock>
+                <TextBlock xml:space="preserve">Количеству посещений 
+от большего к меньшему
+                </TextBlock>
             </ComboBox>
         </StackPanel>
 
-
-
-
         <StackPanel Grid.Column="1" Orientation="Horizontal">
             <TextBlock FontWeight="Bold" Margin="10" VerticalAlignment="Center" FontSize="20" Text="Выберите пол:"></TextBlock>
-            <ComboBox Name="ComboType" SelectionChanged="ComboType_SelectionChanged" Width="150" Height="30">
+            <ComboBox Name="Gender_CB" SelectionChanged="Gender_CB_SelectionChanged" Width="150" Height="40">
                 <TextBlock>Все</TextBlock>
                 <TextBlock>Мужской</TextBlock>
                 <TextBlock>Женский</TextBlock>
 
             </ComboBox>
         </StackPanel>
+
+        <Button Grid.Row="6" Name="AddButton" Height="30" Width="150" Click="AddButton_Click" Background="#FF04A0FF" Content="Добавить" Margin="10"  FontSize="15" HorizontalAlignment="Left"/>
         <ListView Grid.ColumnSpan="6" Grid.Row="1" Name="ClientsListView">
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Click="DeleteBtn_Click_1" Name="DeleteBtn" Header="копировать id"></MenuItem>
-                </ContextMenu>
-            </ListView.ContextMenu>
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -110,13 +108,14 @@
                             <TextBlock FontSize="18" Text="{Binding VisitCount, StringFormat={}Кол-во посещений: {0}}"></TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Row="7">
-                            <Button Width="67" Margin="8" Grid.Row="7" Content="Удалить" HorizontalAlignment="Right" Click="DeleteBtn_Click" ></Button>
-                            <Button Width="67" Margin="8" Grid.Row="7" Content="Редакт." HorizontalAlignment="Left" ></Button>
+                            <Button Width="67" Margin="8" Grid.Row="7" Content="Удалить" HorizontalAlignment="Right" Click="MenuItem_Click" ></Button>
+                            <Button Width="67" Margin="8" Grid.Row="7" Content="Редакт." HorizontalAlignment="Left" Click="EditDutton_Click"></Button>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
         <StackPanel Margin="5 20 0 0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="3">
             <TextBlock Text="Выводить по "/>
             <ComboBox Name="strCount" Width="100" SelectionChanged="strCount_SelectionChanged">
@@ -138,6 +137,5 @@
             </ListBox>
             <Button Name="RightDirButton" Content="&gt;" Width="20" Height="25" Click="RightDirButton_Click"/>
         </StackPanel>
-        <Button Content="Добавить клиента" Height="30" Grid.Row="7" Width="150" VerticalAlignment="Center" Margin="20 20 0 0" HorizontalAlignment="Left"></Button>
     </Grid>
 </Page>

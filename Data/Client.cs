@@ -12,7 +12,7 @@ namespace GubaidullinLanguage.Data
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    
+
     public partial class Client
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,7 +21,7 @@ namespace GubaidullinLanguage.Data
             this.ClientService = new HashSet<ClientService>();
             this.Tag = new HashSet<Tag>();
         }
-    
+
         public int ID { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
@@ -36,21 +36,59 @@ namespace GubaidullinLanguage.Data
         public string ShortRegistrationDate => RegistrationDate.ToShortDateString();
         public string ShortBirthday => Birthday.ToShortDateString();
         public int VisitCount => Convert.ToInt32(GubaidullinLanguageEntities.GetContext().ClientService.Where(x => x.ClientID == this.ID).Count());
-        public string LastVisitDate 
+
+        public string GenderN
+        {
+            get
+            {
+                return Gender.Name;
+            }
+        }
+        public string last_start
+        {
+            get
+            {
+                return this.ClientService.Max(p => p.StartTime).ToString();
+            }
+        }
+        public string last_startt
+        {
+            get
+            {
+                return this.ClientService.Max(p => p.StartTime).ToString();
+            }
+        }
+        public int countStartDates
+        {
+            get
+            {
+                return this.ClientService.Count;
+            }
+        }
+        public string start
+        {
+            get
+            {
+                return this.ClientService.Select(p => p.StartTime).ToString();
+            }
+        }
+        public string phone
+        {
+            get
+            {
+                return Phone.Replace("(", "").Replace(")", "").Replace("-", "");
+            }
+        }
+        public string LastVisitDate
         {
             get
             {
                 if (VisitCount == 0)
-                {
                     return "нет";
-                }
                 else
-                {
-                    return GubaidullinLanguageEntities.GetContext().ClientService.Where(x => x.ClientID == this.ID).Max(p => p.StartTime).ToShortDateString();
-                }
+                    return GubaidullinLanguageEntities.GetContext().ClientService.Where(x => x.ClientID == this.ID).Max(p => p.StartTime).ToString();
             }
-        } 
-
+        }
 
         public virtual Gender Gender { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

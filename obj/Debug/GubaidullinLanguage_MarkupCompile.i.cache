@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\User\Study\РПМ\GubaidullinLanguage\App.xaml
-21973304486
+31041561366
 2114849779
-231859923258
+24-1491889902
 181838353865
-Pages\ClientPage.xaml;Windows\MainWindow.xaml;
+Pages\ClientPage.xaml;Windows\AddEditWindow.xaml;Windows\MainWindow.xaml;
 
-False
+True
 
